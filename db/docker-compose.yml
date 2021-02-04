@@ -1,0 +1,4 @@
+services:
+  db:
+    build: .
+#better way than this -- look for sqlite node.js
