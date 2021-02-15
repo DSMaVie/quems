@@ -1,7 +1,12 @@
-# Getting Started with Create React App
+# Quems-Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Welcome to the frontend of Quems, the Queer Event Management System.
 
+## installation
+
+In order to run the scripts below you need [Node.js](https://nodejs.org/en/). Once you have node.js installed.
+You can get the package manager yarn via `npm install -g yarn`. Install the project
+dependencies with yarn install inside the project folder
 ## Available Scripts
 
 In the project directory, you can run:
@@ -68,3 +73,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `yarn build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## Resources
+* (basic ESLint and prettier config)[https://www.robertcooper.me/using-eslint-and-prettier-in-a-typescript-project]
