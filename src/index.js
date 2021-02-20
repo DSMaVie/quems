@@ -3,33 +3,34 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, ThemeProvider, responsiveFontSizes } from '@material-ui/core/styles';
 import { deDE, enUS } from '@material-ui/core/locale';
 
-const GlobalSettings = React.createContext({
+// providing global settings object for other components (subject to refactor)
+export const appWideSettings = React.createContext({
   darkMode: false,
-  locale: 'enUS',
+  langDe: false,
 });
 
-const locales = {
-  enUs: enUS,
-  deDE: deDE,
-};
-
-const theme = createMuiTheme(
+// build theme based on global settings object
+let theme = createMuiTheme(
   {
     palette: {
-      type: GlobalSettings.darkMode,
+      type: appWideSettings.darkMode,
     },
   },
-  locales[GlobalSettings.locale],
+  appWideSettings.langDe ? deDE : enUS,
 );
+theme = responsiveFontSizes(theme);
 
+// render root of DOM
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>
+    <appWideSettings.Provider>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </appWideSettings.Provider>
   </React.StrictMode>,
   document.getElementById('root'),
 );

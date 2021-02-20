@@ -5,8 +5,9 @@ import TabBar from './components/TabBar';
 
 function App() {
   const listsOfTabs = ['Events', 'Social Media', 'Templates'];
+  const [tab, setTab] = React.useState(listsOfTabs[0]);
   return (
-    <TabBar listOfTabs={listsOfTabs} />
+    <TabBar listOfTabs={listsOfTabs} currentTab={tab} setTab={setTab} />
     // <div className="App">
     //   <header className="App-header">
     //     <img src={logo} className="App-logo" alt="logo" />
