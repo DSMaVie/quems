@@ -4,7 +4,7 @@ import { AppBar, Tabs, Tab, ButtonGroup, IconButton, Toolbar } from '@material-u
 import { makeStyles } from '@material-ui/core/styles';
 import WbIncandescentIcon from '@material-ui/icons/WbIncandescent';
 import { IconFlagDE, IconFlagUK } from 'material-ui-flags';
-import { appWideSettings } from '../index.js';
+import { appWideSettingsContext, useAppWideSettingsContext } from '../contexts/appWideSettings';
 const useStyles = makeStyles({
   toolbar: {
     display: 'flex',
@@ -17,22 +17,15 @@ const useStyles = makeStyles({
   },
 });
 
-function TabBar(props) {
-  const globalSettings = React.useContext(appWideSettings);
+const TabBar = (props) => {
+  const appWideSettings = useAppWideSettingsContext(appWideSettingsContext);
   const classes = useStyles();
   const handleTabChange = (event, newTab) => {
     console.assert(props.listOfTabs.includes(newTab), `${newTab} not in list of tabs`);
     props.setTab(newTab);
   };
-  const handleDarkModeChange = () => {
-    globalSettings.darkMode = !globalSettings.darkMode;
-  };
 
-  const handleLangChange = () => {
-    globalSettings.langDe = !globalSettings.langDe;
-  };
-
-  // global settings seems to be empty -> check with debugger
+  // global seettings dont trigger update
   return (
     <div>
       <AppBar position="static">
@@ -44,22 +37,22 @@ function TabBar(props) {
             centered //small displays should use variant="fullWidth" instead
           >
             {props.listOfTabs.map((tab) => (
-              <Tab key={tab} label={tab} />
+              <Tab key={tab} label={tab} value={tab} />
             ))}
           </Tabs>
-          <ButtonGroup className={classes.buttons} variant="text" color="secondary">
-            <IconButton onClick={handleDarkModeChange}>
+          <ButtonGroup className={classes.buttons} color="secondary">
+            <IconButton onClick={appWideSettings.toggleDarkMode}>
               <WbIncandescentIcon />
             </IconButton>
-            <IconButton onClick={handleLangChange}>
-              {globalSettings.langDe ? <IconFlagUK /> : <IconFlagDE />}
+            <IconButton onClick={appWideSettings.toggleLang}>
+              {appWideSettings.langDe ? <IconFlagUK /> : <IconFlagDE />}
             </IconButton>
           </ButtonGroup>
         </Toolbar>
       </AppBar>
     </div>
   );
-}
+};
 
 TabBar.propTypes = {
   listOfTabs: PropTypes.arrayOf(PropTypes.string).isRequired,
