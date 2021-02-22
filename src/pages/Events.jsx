@@ -1,23 +1,35 @@
 import React from 'react';
-import { Paper } from '@material-ui/core';
-const styles = React.makeStyles({
+import { Grid, Paper } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
   outer: {
     flexGrow: 1,
+    margin: 10,
   },
   agendaView: {
     flex: 1,
+    textAlign: 'center',
   },
   calendarView: {
     flex: 1,
+    textAlign: 'center',
   },
 });
 
 const Events = () => {
-  const classes = React.useStyles(styles);
+  const classes = useStyles();
+
   return (
     <div className={classes.outer}>
-      <Paper className={classes.agendaView} />
-      <Paper className={classes.calendarView} />
+      <Grid container spacing={1}>
+        <Grid item xs={4} spacing={1}>
+          <Paper className={classes.agendaView}>Agenda</Paper>
+        </Grid>
+        <Grid item xs={8} spacing={1}>
+          <Paper className={classes.calendarView}>Calendar</Paper>
+        </Grid>
+      </Grid>
     </div>
   );
 };
