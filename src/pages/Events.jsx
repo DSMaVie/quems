@@ -1,5 +1,5 @@
-import React from 'react';
-import { Grid, Paper } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import { Grid, List, ListItem, ListItemText, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
@@ -7,9 +7,8 @@ const useStyles = makeStyles({
     flexGrow: 1,
     margin: 10,
   },
-  agendaView: {
-    flex: 1,
-    textAlign: 'center',
+  listItem: {
+    background: 'grey',
   },
   calendarView: {
     flex: 1,
@@ -20,13 +19,30 @@ const useStyles = makeStyles({
 const Events = () => {
   const classes = useStyles();
 
+  const [eventList, setEventList] = useState(['Events']);
+
+  useEffect(() => {
+    fetch('http://localhost:3000/events', { mode: 'cors' })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setEventList(data);
+      });
+  }, []);
+
   return (
     <div className={classes.outer}>
       <Grid container spacing={1}>
-        <Grid item xs={4} spacing={1}>
-          <Paper className={classes.agendaView}>Agenda</Paper>
+        <Grid item xs={4}>
+          <List component="nav" className={classes.eventList}>
+            {eventList.map((event, index) => (
+              <ListItem button key={'item' + index} className={classes.listItem}>
+                <ListItemText primary={event.name_de} />
+              </ListItem>
+            ))}
+          </List>
         </Grid>
-        <Grid item xs={8} spacing={1}>
+        <Grid item xs={8}>
           <Paper className={classes.calendarView}>Calendar</Paper>
         </Grid>
       </Grid>
