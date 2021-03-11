@@ -1,25 +1,50 @@
-import { createSlice, configureStore } from '@reduxjs/toolkit';
+import { createSlice, configureStore, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+//createAsyncThunk for async logic
+const fetchEvents = createAsyncThunk('events/fetchEvents', async () => {
+  const response = await axios.get('localhost:5000/events');
+  if (response.status === 200) {
+    return response.data;
+  }
+});
+
+// adapter and slices for store
+const eventAdapter = createEntityAdapter();
 
 const eventSlice = createSlice({
-  name: 'events',
-  initialState: [],
+  name: 'eventStore',
+  initialState: eventAdapter.getInitialState({ isLoading: true }),
   reducers: {
-    add: (state, action) => {
+    add: (_, action) => {
+      // needs to become async later as well
       if (action.payload instanceof Array) {
-        return [...state, ...action.payload];
+        eventAdapter.addMany(action.payload); //might break bc. of array
       } else {
-        return [...state, action.payload];
+        eventAdapter.addOne(action.payload);
       }
+    },
+    extraReducers: (builder) => {
+      builder
+        .addCase(fetchEvents.pending, (state) => {
+          state.loading = true;
+        })
+        .addCase(fetchEvents.fulfilled, (state, action) => {
+          eventAdapter.upsertMany(state, action.payload);
+          state.loading = false;
+        });
     },
   },
 });
 
+//store config and return
 const store = configureStore({
   reducer: {
-    events: eventSlice.actions,
+    eventStore: eventSlice.actions,
   },
 });
 
 export default store;
 
-// TODO: next async logic is needed -> creaseAsyncThunk
+// notes section
+// need to document: interface of api -> fetch events wrapped in array
