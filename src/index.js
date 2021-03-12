@@ -7,12 +7,13 @@ import { createMuiTheme, ThemeProvider, responsiveFontSizes } from '@material-ui
 import { deDE, enUS } from '@material-ui/core/locale';
 import { appWideSettingsContext, useAppWideSettingsContext } from './contexts/appWideSettings';
 import { Provider } from 'react-redux';
-import store from './store/events.js';
+import store from './redux/store';
 
 const IndexComponent = () => {
   // providing global settings object for other components (subject to refactor)
   const appWideSettings = useAppWideSettingsContext(appWideSettingsContext);
   // build theme based on global settings object
+
   let theme = createMuiTheme(
     {
       palette: {
