@@ -4,7 +4,7 @@ import axios from 'axios';
 // createAsyncThunk for async logic
 //note: async thunks should always be exported (as they are actions essentially)
 export const fetchEvents = createAsyncThunk('events/fetchEvents', async () => {
-  const response = await axios.get('http://127.0.0.1:5000/events', { headers: { 'Access-Control-Allow-Origin': '*' } });
+  const response = await axios.get('http://127.0.0.1:5000/events');
   if (response.status === 200) {
     return response.data;
   }
@@ -15,7 +15,7 @@ const eventAdapter = createEntityAdapter();
 
 const eventSlice = createSlice({
   name: 'events',
-  initialState: eventAdapter.getInitialState({ isLoading: true }),
+  initialState: eventAdapter.getInitialState({ isLoaded: false }),
   reducers: {
     addEvent: eventAdapter.addOne,
     addEvents: eventAdapter.addMany,
@@ -24,12 +24,12 @@ const eventSlice = createSlice({
   extraReducers: {
     [fetchEvents.pending]: (state) => {
       console.log('Fetching of Events in Progress!');
-      state.loading = true;
+      state.isLoaded = false;
     },
     [fetchEvents.fulfilled]: (state, action) => {
       console.log('action :>> ', action);
       eventAdapter.upsertMany(state, action.payload);
-      state.loading = false;
+      state.isLoaded = true;
     },
   },
 });
