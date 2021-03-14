@@ -6,11 +6,14 @@ import reportWebVitals from './reportWebVitals';
 import { createMuiTheme, ThemeProvider, responsiveFontSizes } from '@material-ui/core/styles';
 import { deDE, enUS } from '@material-ui/core/locale';
 import { appWideSettingsContext, useAppWideSettingsContext } from './contexts/appWideSettings';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 
 const IndexComponent = () => {
   // providing global settings object for other components (subject to refactor)
   const appWideSettings = useAppWideSettingsContext(appWideSettingsContext);
   // build theme based on global settings object
+
   let theme = createMuiTheme(
     {
       palette: {
@@ -24,7 +27,9 @@ const IndexComponent = () => {
   return (
     <React.StrictMode>
       <ThemeProvider theme={theme}>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </ThemeProvider>
     </React.StrictMode>
   );
