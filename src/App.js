@@ -2,7 +2,7 @@ import React from 'react';
 // import llogo from './logo.svg';
 import './App.css';
 import TabBar from './components/TabBar';
-import Events from './pages/Events';
+import EventView from './pages/Events';
 
 function App() {
   const listsOfTabs = ['Events', 'Social Media', 'Templates'];
@@ -10,7 +10,7 @@ function App() {
   return (
     <div>
       <TabBar listOfTabs={listsOfTabs} currentTab={tab} setTab={setTab} />
-      <Events />
+      <EventView />
     </div>
   );
 }

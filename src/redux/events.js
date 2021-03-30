@@ -1,8 +1,11 @@
-import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/toolkit';
+import {
+  createSlice,
+  createEntityAdapter,
+  createAsyncThunk,
+} from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// createAsyncThunk for async logic
-//note: async thunks should always be exported (as they are actions essentially)
+// async thunks and adaptors not to be exported
 export const fetchEvents = createAsyncThunk('events/fetchEvents', async () => {
   const response = await axios.get('http://127.0.0.1:5000/events');
   if (response.status === 200) {
@@ -10,9 +13,9 @@ export const fetchEvents = createAsyncThunk('events/fetchEvents', async () => {
   }
 });
 
-// adapter and slices for store
 const eventAdapter = createEntityAdapter();
 
+//slices and reducers for reductions
 const eventSlice = createSlice({
   name: 'events',
   initialState: eventAdapter.getInitialState({ isLoaded: false }),
@@ -27,7 +30,6 @@ const eventSlice = createSlice({
       state.isLoaded = false;
     },
     [fetchEvents.fulfilled]: (state, action) => {
-      console.log('action :>> ', action);
       eventAdapter.upsertMany(state, action.payload);
       state.isLoaded = true;
     },
@@ -36,5 +38,11 @@ const eventSlice = createSlice({
 
 export const { addEvent, addEvents } = eventSlice.actions;
 export default eventSlice.reducer;
-// notes section
-// need to document: interface of api -> fetch events wrapped in array
+
+// selectors for export
+
+export const {
+  selectTotal: selectNumberOfEvents,
+  selectIds: selectEventIds,
+  selectById: selectEventById,
+} = eventAdapter.getSelectors((state) => state.events);
