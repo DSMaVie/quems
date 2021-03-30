@@ -3,24 +3,33 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { createMuiTheme, ThemeProvider, responsiveFontSizes } from '@material-ui/core/styles';
+import {
+  createMuiTheme,
+  ThemeProvider,
+  responsiveFontSizes,
+} from '@material-ui/core/styles';
 import { deDE, enUS } from '@material-ui/core/locale';
-import { appWideSettingsContext, useAppWideSettingsContext } from './contexts/appWideSettings';
+import {
+  appWideSettingsContext,
+  useAppWideSettingsContext,
+} from './contexts/appWideSettings';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 
 const IndexComponent = () => {
   // providing global settings object for other components (subject to refactor)
-  const appWideSettings = useAppWideSettingsContext(appWideSettingsContext);
+  const { darkMode, langDe } = useAppWideSettingsContext(
+    appWideSettingsContext,
+  );
   // build theme based on global settings object
 
   let theme = createMuiTheme(
     {
       palette: {
-        type: appWideSettings.darkMode ? 'dark' : 'light',
+        type: darkMode ? 'dark' : 'light',
       },
     },
-    appWideSettings.langDe ? deDE : enUS,
+    langDe ? deDE : enUS,
   );
   theme = responsiveFontSizes(theme);
 

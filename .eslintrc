@@ -21,6 +21,5 @@
     "plugin:prettier/recommended", // for  prettier
     "prettier/flowtype", // to prevent conflicts between prettier and react
     "prettier/react" // to prevent conflicts between prettier and react
-  ],
-
+  ]
 }

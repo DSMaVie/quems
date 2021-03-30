@@ -1,51 +1,29 @@
 import React from 'react';
-import { Grid, List, ListItem, ListItemText, Paper } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchEvents } from '../redux/events';
+import { Container, Grid, makeStyles, Paper } from '@material-ui/core';
+import EventList from '../components/EventList';
+
 const useStyles = makeStyles({
-  outer: {
-    flexGrow: 1,
-    margin: 10,
-  },
-  listItem: {
-    background: 'grey',
-  },
-  calendarView: {
-    flex: 1,
-    textAlign: 'center',
+  root: {
+    height: '80vh',
   },
 });
 
-const Events = () => {
+const EventView = () => {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const eventsLoaded = useSelector((state) => state.events.isLoaded);
-  const eventsList = useSelector((state) => state.events.entities);
-
-  if (!eventsLoaded) {
-    dispatch(fetchEvents());
-    return <h1>Event is still loading</h1>;
-  }
-
   return (
-    <div className={classes.outer}>
-      <Grid container spacing={1}>
+    <Container className={classes.root}>
+      <Grid container spacing={1} className={classes.root} alignItems="stretch">
         <Grid item xs={4}>
-          <List component="nav" className={classes.eventList}>
-            {Object.values(eventsList).map((event, index) => (
-              <ListItem button key={'item' + index} className={classes.listItem}>
-                <ListItemText primary={event.name_de} />
-              </ListItem>
-            ))}
-          </List>
+          <Paper>
+            <EventList />
+          </Paper>
         </Grid>
         <Grid item xs={8}>
-          <Paper className={classes.calendarView}>Calendar</Paper>
+          <Paper>Calendar</Paper>
         </Grid>
       </Grid>
-    </div>
+    </Container>
   );
 };
 
-export default Events;
+export default EventView;
