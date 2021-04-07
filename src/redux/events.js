@@ -30,7 +30,8 @@ const eventSlice = createSlice({
       state.isLoaded = false;
     },
     [fetchEvents.fulfilled]: (state, action) => {
-      eventAdapter.upsertMany(state, action.payload);
+      console.log('events have been fetched!');
+      eventAdapter.addMany(state, action.payload);
       state.isLoaded = true;
     },
   },
