@@ -1,6 +1,5 @@
 import { Container, makeStyles } from '@material-ui/core';
 import React from 'react';
-import './App.css';
 import TabBar from './components/TabBar';
 import EventView from './pages/Events';
 

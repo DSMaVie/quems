@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import PropTypes from 'prop-types';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {
@@ -9,20 +9,18 @@ import {
   responsiveFontSizes,
 } from '@material-ui/core/styles';
 import { deDE, enUS } from '@material-ui/core/locale';
+
 import {
-  appWideSettingsContext,
-  useAppWideSettingsContext,
+  AppWideSettingsContext,
+  AppWideSettingsProvider,
 } from './contexts/appWideSettings';
+import { AlertProvider } from './contexts/alert';
+
 import { Provider } from 'react-redux';
 import store from './redux/store';
 
-const IndexComponent = () => {
-  // providing global settings object for other components (subject to refactor)
-  const { darkMode, langDe } = useAppWideSettingsContext(
-    appWideSettingsContext,
-  );
-  // build theme based on global settings object
-
+const MuiThemeProvider = (props) => {
+  const { darkMode, langDe } = useContext(AppWideSettingsContext);
   let theme = createMuiTheme(
     {
       palette: {
@@ -32,14 +30,22 @@ const IndexComponent = () => {
     langDe ? deDE : enUS,
   );
   theme = responsiveFontSizes(theme);
+  return <ThemeProvider theme={theme}> {props.children}</ThemeProvider>;
+};
+MuiThemeProvider.propTypes = { children: PropTypes.node.isRequired };
 
+const IndexComponent = () => {
   return (
     <React.StrictMode>
-      <ThemeProvider theme={theme}>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </ThemeProvider>
+      <AppWideSettingsProvider>
+        <MuiThemeProvider>
+          <AlertProvider>
+            <Provider store={store}>
+              <App />
+            </Provider>
+          </AlertProvider>
+        </MuiThemeProvider>
+      </AppWideSettingsProvider>
     </React.StrictMode>
   );
 };

@@ -1,23 +1,17 @@
 import { ListItem, ListItemText, makeStyles } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
-import React from 'react';
-import PropTypes from 'prop-types';
-import { range } from 'lodash';
 import { formatDistanceToNow, isBefore } from 'date-fns';
 import deLocale from 'date-fns/locale/de';
 import enLocale from 'date-fns/locale/en-US';
-import { selectEventById, selectEventIds } from '../redux/events';
-import {
-  useAppWideSettingsContext,
-  appWideSettingsContext,
-} from '../contexts/appWideSettings';
+import { range } from 'lodash';
+import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Virtuoso } from 'react-virtuoso';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchEvents } from '../redux/events';
+import { AppWideSettingsContext } from '../contexts/appWideSettings';
+import { fetchEvents, selectEventById, selectEventIds } from '../redux/events';
 
 // helper
-// const enLocale = new Intl.Locale('en-US');
-// const deLocale = new Intl.Locale('de-DE');
 
 const parseEventForList = (event, langDe) => {
   return {
@@ -38,6 +32,7 @@ const useStyles = makeStyles({
   },
 });
 
+// components
 const DummyEventListItem = () => {
   const classes = useStyles();
 
@@ -52,11 +47,10 @@ const DummyEventListItem = () => {
   );
 };
 
-// components
 const EventListItem = ({ eventID }) => {
-  const { langDe: langDe } = useAppWideSettingsContext(appWideSettingsContext);
+  const { langDe: langDe } = useContext(AppWideSettingsContext);
   const event = useSelector((state) => selectEventById(state, eventID));
-  console.log(`event`, event);
+
   const { eventName, eventTillTime, eventIsInPast } = parseEventForList(
     event,
     langDe,

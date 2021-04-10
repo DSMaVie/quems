@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
   AppBar,
@@ -11,10 +11,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import WbIncandescentIcon from '@material-ui/icons/WbIncandescent';
 import { IconFlagDE, IconFlagUK } from 'material-ui-flags';
-import {
-  appWideSettingsContext,
-  useAppWideSettingsContext,
-} from '../contexts/appWideSettings';
+import { AppWideSettingsContext } from '../contexts/appWideSettings';
 const useStyles = makeStyles({
   toolbar: {
     display: 'flex',
@@ -28,7 +25,7 @@ const useStyles = makeStyles({
 });
 
 const TabBar = (props) => {
-  const appWideSettings = useAppWideSettingsContext(appWideSettingsContext);
+  const appWideSettings = useContext(AppWideSettingsContext);
   const classes = useStyles();
   const handleTabChange = (event, newTab) => {
     console.assert(
@@ -37,8 +34,7 @@ const TabBar = (props) => {
     );
     props.setTab(newTab);
   };
-
-  // global seettings dont trigger update
+  console.log(appWideSettings);
   return (
     <div>
       <AppBar className={props.className} position="static">

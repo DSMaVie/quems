@@ -46,4 +46,5 @@ export const {
   selectTotal: selectNumberOfEvents,
   selectIds: selectEventIds,
   selectById: selectEventById,
+  selectAll,
 } = eventAdapter.getSelectors((state) => state.events);
