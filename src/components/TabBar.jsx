@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import WbIncandescentIcon from '@material-ui/icons/WbIncandescent';
 import { IconFlagDE, IconFlagUK } from 'material-ui-flags';
 import { AppWideSettingsContext } from '../contexts/appWideSettings';
+import { AlertContext } from '../contexts/alert';
 const useStyles = makeStyles({
   toolbar: {
     display: 'flex',
@@ -26,15 +27,20 @@ const useStyles = makeStyles({
 
 const TabBar = (props) => {
   const appWideSettings = useContext(AppWideSettingsContext);
+  const alert = useContext(AlertContext);
   const classes = useStyles();
   const handleTabChange = (event, newTab) => {
+    alert.fireAlert({
+      severity: 'info',
+      message: `The Tab has been changed successfully to ${newTab}!`,
+    });
     console.assert(
       props.listOfTabs.includes(newTab),
       `${newTab} not in list of tabs`,
     );
     props.setTab(newTab);
   };
-  console.log(appWideSettings);
+
   return (
     <div>
       <AppBar className={props.className} position="static">

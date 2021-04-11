@@ -37,15 +37,15 @@ MuiThemeProvider.propTypes = { children: PropTypes.node.isRequired };
 const IndexComponent = () => {
   return (
     <React.StrictMode>
-      <AppWideSettingsProvider>
-        <MuiThemeProvider>
-          <AlertProvider>
-            <Provider store={store}>
+      <Provider store={store}>
+        <AppWideSettingsProvider>
+          <MuiThemeProvider>
+            <AlertProvider>
               <App />
-            </Provider>
-          </AlertProvider>
-        </MuiThemeProvider>
-      </AppWideSettingsProvider>
+            </AlertProvider>
+          </MuiThemeProvider>
+        </AppWideSettingsProvider>
+      </Provider>
     </React.StrictMode>
   );
 };

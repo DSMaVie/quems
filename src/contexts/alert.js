@@ -28,7 +28,7 @@ export const AlertProvider = (props) => {
       }}
     >
       {props.children}
-      <AlertSnackbar></AlertSnackbar>
+      <AlertSnackbar />
     </AlertContext.Provider>
   );
 };

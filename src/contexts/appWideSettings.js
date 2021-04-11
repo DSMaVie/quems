@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from 'react';
+import React, { createContext, useReducer, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 const dummyState = {
@@ -30,13 +30,19 @@ export const AppWideSettingsProvider = (props) => {
     darkMode: dummyState.darkMode,
   });
 
+  const toggleLang = useCallback(() => dispatch({ type: TOGGLE_LANG }), []);
+  const toggleDarkMode = useCallback(
+    () => dispatch({ type: TOGGLE_DARK_MODE }),
+    [],
+  );
+
   return (
     <AppWideSettingsContext.Provider
       value={{
         langDe: settingsState.langDe,
         darkMode: settingsState.darkMode,
-        toggleLang: dispatch({ type: TOGGLE_LANG }),
-        toggleDarkMode: dispatch({ type: TOGGLE_DARK_MODE }),
+        toggleLang: toggleLang,
+        toggleDarkMode: toggleDarkMode,
       }}
     >
       {props.children}
