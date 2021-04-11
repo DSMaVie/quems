@@ -1,6 +1,7 @@
 import { Container, makeStyles } from '@material-ui/core';
 import React from 'react';
 import TabBar from './components/TabBar';
+import DetailsView from './components/DetailsView';
 import EventView from './pages/Events';
 
 const useStyles = makeStyles({
@@ -24,6 +25,7 @@ function App() {
       />
       <Container className={classes.content}>
         <EventView />
+        <DetailsView />
       </Container>
     </div>
   );

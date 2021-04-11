@@ -31,7 +31,7 @@ const TabBar = (props) => {
   const classes = useStyles();
   const handleTabChange = (event, newTab) => {
     alert.fireAlert({
-      severity: 'info',
+      severity: 'success',
       message: `The Tab has been changed successfully to ${newTab}!`,
     });
     console.assert(

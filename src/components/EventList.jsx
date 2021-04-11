@@ -9,7 +9,12 @@ import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Virtuoso } from 'react-virtuoso';
 import { AppWideSettingsContext } from '../contexts/appWideSettings';
-import { fetchEvents, selectEventById, selectEventIds } from '../redux/events';
+import {
+  fetchEvents,
+  selectEventById,
+  selectEventIds,
+  selectEvent,
+} from '../redux/events';
 
 // helper
 
@@ -50,15 +55,18 @@ const DummyEventListItem = () => {
 const EventListItem = ({ eventID }) => {
   const { langDe: langDe } = useContext(AppWideSettingsContext);
   const event = useSelector((state) => selectEventById(state, eventID));
-
   const { eventName, eventTillTime, eventIsInPast } = parseEventForList(
     event,
     langDe,
   );
   const eventColor = eventIsInPast ? '#FF0000' : '#00FF00';
+  const dispatch = useDispatch();
+  const handleClick = () => {
+    dispatch(selectEvent(eventID));
+  };
 
   return (
-    <ListItem color={eventColor} button key={eventID}>
+    <ListItem color={eventColor} button key={eventID} onClick={handleClick}>
       <ListItemText primary={eventName} secondary={eventTillTime} />
     </ListItem>
   );
@@ -70,13 +78,12 @@ EventListItem.propTypes = {
 
 const EventList = () => {
   const eventsLoaded = useSelector((state) => state.events.isLoaded);
-  const dispatcher = useDispatch();
-  if (!eventsLoaded) {
-    dispatcher(fetchEvents());
-  }
-
   const dummyEventIds = range(300);
   const eventIds = useSelector((state) => selectEventIds(state));
+  const dispatch = useDispatch();
+  if (!eventsLoaded) {
+    dispatch(fetchEvents());
+  }
 
   return (
     <Virtuoso

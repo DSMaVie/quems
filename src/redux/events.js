@@ -18,10 +18,26 @@ const eventAdapter = createEntityAdapter();
 //slices and reducers for reductions
 const eventSlice = createSlice({
   name: 'events',
-  initialState: eventAdapter.getInitialState({ isLoaded: false }),
+  initialState: eventAdapter.getInitialState({
+    isLoaded: false,
+    selected: null,
+  }),
   reducers: {
     addEvent: eventAdapter.addOne,
     addEvents: eventAdapter.addMany,
+    selectEvent: (state, action) => {
+      if (
+        typeof action.payload === 'number' &&
+        state.ids.indexOf(action.payload) >= 0
+      ) {
+        state.selected = action.payload;
+      } else {
+        console.warn('select events by providing an event ID from the store!');
+      }
+    },
+    deselectEvent: (state) => {
+      state.selected = null;
+    },
   },
 
   extraReducers: {
@@ -37,7 +53,12 @@ const eventSlice = createSlice({
   },
 });
 
-export const { addEvent, addEvents } = eventSlice.actions;
+export const {
+  addEvent,
+  addEvents,
+  selectEvent,
+  deselectEvent,
+} = eventSlice.actions;
 export default eventSlice.reducer;
 
 // selectors for export

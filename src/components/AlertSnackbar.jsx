@@ -10,9 +10,10 @@ export const AlertSnackbar = () => {
 
   //open snackbar if alert is fullfills certain reqs
   useEffect(() => {
+    const possibleSeverities = ['info', 'success', 'error', 'warning'];
     if (
       !!alert.severity &&
-      alert.severity.length > 0 &&
+      possibleSeverities.indexOf(alert.severity) >= 0 &&
       !!alert.message &&
       alert.message.length > 0
     ) {
